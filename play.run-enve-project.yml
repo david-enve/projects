@@ -1,0 +1,8 @@
+---
+- name: deploy in dev 
+    hosts: all
+      become: true
+        become_user: root
+
+          roles:
+                      - deploy-dev
