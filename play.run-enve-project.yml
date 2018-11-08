@@ -1,8 +1,8 @@
 ---
 - name: deploy in dev 
-    hosts: localhost
-      become: true
-        become_user: root
+  hosts: localhost
+  become: true
+  become_user: root
 
-          roles:
-                      - deploy-dev
+  roles:
+    - deploy-dev
