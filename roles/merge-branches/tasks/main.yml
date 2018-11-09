@@ -44,12 +44,26 @@
     - update
 
 # Merge code 
-- name: Pull {{ build_project }} for enve
+- name: Pull {{ build_project }} for develop branch
   shell: |
     cd {{ build_path }}/{{ build_project }}
     sudo git checkout {{ branch }}
+    sudo git checkout -b develop 
+    sudo GIT_SSH_COMMAND="ssh -i {{ deploy_key }} -o StrictHostKeyChecking=no -F /dev/null" git pull git@github.com:david-enve/projects.git develop:develop
+  delegate_to: localhost
+  run_once: true
+  tags: 
+    - update
+    
+# Merge code 
+- name: Merge develop code in {{ branch }}
+  shell: |
+    cd {{ build_path }}/{{ build_project }}
+    git checkout release
     sudo GIT_SSH_COMMAND="ssh -i {{ deploy_key }} -o StrictHostKeyChecking=no -F /dev/null" git merge develop 
   delegate_to: localhost
   run_once: true
   tags: 
     - update
+    
+    
