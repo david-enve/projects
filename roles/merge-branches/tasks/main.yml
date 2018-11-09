@@ -51,7 +51,7 @@
 - name: Pull {{ build_project }} for enve
   shell: |
     cd {{ build_path }}/{{ build_project }}
-    git checkout {{ env }}
+    sudo git checkout {{ env }}
     sudo GIT_SSH_COMMAND="ssh -i {{ deploy_key }} -o StrictHostKeyChecking=no -F /dev/null" git merge develop 
   delegate_to: localhost
   run_once: true
