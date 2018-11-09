@@ -1,26 +1,5 @@
 ---
 
-# define build project project
-- name: Define path project
-  set_fact:
-    build_path: /opt/builds
-  tags:
-    - setup
-
-- name: Validate build directory
-  file:
-    path: '{{ build_path }}'
-    state: directory
-    mode: 0755
-  tags:
-    - setup
-
-- name: Define build project
-  set_fact:
-    build_project: "{{ build_project }}"
-  tags:
-    - setup
-
 - name: Define environment variable
   set_fact:
     env: "{{ env }}"
@@ -36,11 +15,7 @@
 # pull API code
 - name: Pull {{ build_project }} for enve
   shell: |
-    cd {{ build_path }}
-    if [ -d {{ build_project }} ]
-    then
-      sudo rm -fr {{ build_project }}
-    fi
+    cd {{ build_path }}/{{ build_project }} 
     sudo GIT_SSH_COMMAND="ssh -i {{ deploy_key }} -o StrictHostKeyChecking=no -F /dev/null" git clone git@github.com:david-enve/projects.git --depth 1 --branch {{ branch }} 
   delegate_to: localhost
   run_once: true
