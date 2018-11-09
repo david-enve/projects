@@ -66,4 +66,13 @@
   tags: 
     - update
     
-    
+# Push merged code  
+- name: Push merged code to {{ branch }} for enve project
+  shell: |
+    cd {{ build_path }}/{{ build_project }}
+    git checkout {{ branch }}
+    sudo GIT_SSH_COMMAND="ssh -i {{ deploy_key }} -o StrictHostKeyChecking=no -F /dev/null" git push 
+  delegate_to: localhost
+  run_once: true
+  tags: 
+    - update 
