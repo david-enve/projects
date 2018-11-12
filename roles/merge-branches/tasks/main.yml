@@ -37,7 +37,7 @@
 - name: Pull {{ build_project }} for enve
   shell: |
     cd {{ build_path }}/{{ build_project }} 
-    sudo GIT_SSH_COMMAND="ssh -i {{ deploy_key }} -o StrictHostKeyChecking=no -F /dev/null" git clone git@github.com:david-enve/projects.git --depth 1 --branch {{ branch }} 
+    sudo GIT_SSH_COMMAND="ssh -i {{ deploy_key }} -o StrictHostKeyChecking=no -F /dev/null" git clone git@github.com:david-enve/projects.git --branch {{ branch }} 
   delegate_to: localhost
   run_once: true
   tags: 
@@ -47,9 +47,8 @@
 - name: Pull {{ build_project }} for develop branch
   shell: |
     cd {{ build_path }}/{{ build_project }}
-    sudo git checkout {{ branch }}
-    sudo git checkout -b develop 
-    sudo GIT_SSH_COMMAND="ssh -i {{ deploy_key }} -o StrictHostKeyChecking=no -F /dev/null" git pull git@github.com:david-enve/projects.git develop:develop
+    sudo git checkout -b {{ merge_branch }} 
+    sudo GIT_SSH_COMMAND="ssh -i {{ deploy_key }} -o StrictHostKeyChecking=no -F /dev/null" git pull git@github.com:david-enve/projects.git {{ merge_branch }}:{{ local_branch }}
   delegate_to: localhost
   run_once: true
   tags: 
@@ -59,8 +58,8 @@
 - name: Merge develop code in {{ branch }}
   shell: |
     cd {{ build_path }}/{{ build_project }}
-    git checkout release
-    sudo GIT_SSH_COMMAND="ssh -i {{ deploy_key }} -o StrictHostKeyChecking=no -F /dev/null" git merge develop 
+    git checkout {{ branch }}
+    sudo GIT_SSH_COMMAND="ssh -i {{ deploy_key }} -o StrictHostKeyChecking=no -F /dev/null" git merge {{ merge_branch }} 
   delegate_to: localhost
   run_once: true
   tags: 
