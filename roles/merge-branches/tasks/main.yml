@@ -33,8 +33,8 @@
   tags:
     - setup
 
-# pull API code
-- name: Pull {{ build_project }} for enve
+# pull code from project
+- name: Pull {{ build_project }} for enve project from  {{ branch }}
   shell: |
     cd {{ build_path }}/{{ build_project }} 
     sudo GIT_SSH_COMMAND="ssh -i {{ deploy_key }} -o StrictHostKeyChecking=no -F /dev/null" git clone git@github.com:david-enve/projects.git --branch {{ branch }} 
@@ -43,8 +43,8 @@
   tags: 
     - update
 
-# Merge code 
-- name: Pull {{ build_project }} for develop branch
+# pull code from {{ merge_branch }} in order to do a merge
+- name: Pull {{ build_project }} from {{ merge_branch }}
   shell: |
     cd {{ build_path }}/{{ build_project }}
     sudo git checkout -b {{ merge_branch }} 
@@ -54,8 +54,8 @@
   tags: 
     - update
     
-# Merge code 
-- name: Merge develop code in {{ branch }}
+# Merge code into {{ branch }}
+- name: merge code from {{ merge_branch }} into {{ branch }}
   shell: |
     cd {{ build_path }}/{{ build_project }}
     git checkout {{ branch }}
@@ -65,8 +65,8 @@
   tags: 
     - update
     
-# Push merged code  
-- name: Push merged code to {{ branch }} for enve project
+# Push merged code to project repository 
+- name: Push merged code to {{ branch }} for enve project repository
   shell: |
     cd {{ build_path }}/{{ build_project }}
     git checkout {{ branch }}
