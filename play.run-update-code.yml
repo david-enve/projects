@@ -1,8 +1,0 @@
----
-- name: Merge branches 
-  hosts: localhost
-  become: true
-  become_user: root
-
-  roles:
-    - merge-branches
